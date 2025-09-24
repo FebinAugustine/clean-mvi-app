@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="11">
-      <module name="Clean_MVI_App.app" target="21" />
-      <module name="Clean_MVI_App.core" target="21" />
-      <module name="Clean_MVI_App.feature.authentication.data" target="21" />
-      <module name="Clean_MVI_App.feature.authentication.presentation" target="21" />
-      <module name="Clean_MVI_App.feature.userdashboard.data" target="21" />
-      <module name="Clean_MVI_App.feature.userdashboard.presentation" target="21" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="11" />
   </component>
 </project>

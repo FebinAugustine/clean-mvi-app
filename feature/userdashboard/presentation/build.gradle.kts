@@ -30,14 +30,48 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    // Domain and core deps
+    implementation(project(":feature:userdashboard:domain"))
+    implementation(project(":shared_domain"))
+    implementation(project(":core"))  // Components, theme
+
+    // Compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.activity.compose)
+
+    // Navigation
+    implementation(libs.navigation.compose)
+
+    // Koin
+    implementation(libs.koin.androidx.compose)
+
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Test deps
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+//    androidTestImplementation(libs.androidx.espresso.core)
+//    androidTestImplementation(platform(libs.compose.bom))
+//    androidTestImplementation(libs.compose.ui.test.junit4)
+//    debugImplementation(libs.compose.ui.tooling)
+//    debugImplementation(libs.compose.ui.test.manifest)
 }
