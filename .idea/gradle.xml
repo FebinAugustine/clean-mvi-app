@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/feature/admindashboard" />
             <option value="$PROJECT_DIR$/feature/admindashboard/data" />
             <option value="$PROJECT_DIR$/feature/admindashboard/domain" />
+            <option value="$PROJECT_DIR$/feature/admindashboard/presentation" />
             <option value="$PROJECT_DIR$/feature/authentication" />
             <option value="$PROJECT_DIR$/feature/authentication/data" />
             <option value="$PROJECT_DIR$/feature/authentication/domain" />
