@@ -25,3 +25,5 @@ include(":app")
 include(":core")
 
 include(":shared_domain")
+include(":feature:authentication:domain")
+include(":feature:authentication:data")

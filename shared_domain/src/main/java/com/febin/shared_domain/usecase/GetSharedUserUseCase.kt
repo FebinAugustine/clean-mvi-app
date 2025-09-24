@@ -1,7 +1,7 @@
 package com.febin.shared_domain.usecase
 
+import com.febin.shared_domain.model.SharedUserError  // Fixed: Use SharedUserError for specific errors
 import com.febin.shared_domain.model.User
-import com.febin.shared_domain.model.UserError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -27,11 +27,11 @@ class GetSharedUserUseCase(
             if (user != null) {
                 emit(Result.success(user))
             } else {
-                emit(Result.failure(UserError.NotFound))
+                emit(Result.failure(SharedUserError.NotFound))  // Fixed: Use SharedUserError.NotFound
             }
         } catch (e: Exception) {
             // Map to domain error if needed
-            emit(Result.failure(UserError.InvalidEmail("Invalid user ID: $userId")))
+            emit(Result.failure(SharedUserError.InvalidEmail("Invalid user ID: $userId")))  // Fixed: Use SharedUserError.InvalidEmail
         }
     }
 }
@@ -68,7 +68,7 @@ sealed class Result<out T> {
     companion object {
         fun <T> loading(): Result<T> = Loading as Result<T>
         fun <T> success(data: T): Result<T> = Success(data)
-        fun failure(exception: Throwable): Result<Nothing> = Failure(exception)  // Fixed: Return Result<Nothing>, not Result<Failure>
+        fun failure(exception: Throwable): Result<Nothing> = Failure(exception)
     }
 }
 
