@@ -30,3 +30,5 @@ include(":feature:authentication:data")
 include(":feature:authentication:presentation")
 
 include(":feature:userdashboard:domain")
+include(":feature:userdashboard:data")
+include(":feature:userdashboard:presentation")

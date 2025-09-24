@@ -18,7 +18,9 @@
             <option value="$PROJECT_DIR$/feature/authentication/domain" />
             <option value="$PROJECT_DIR$/feature/authentication/presentation" />
             <option value="$PROJECT_DIR$/feature/userdashboard" />
+            <option value="$PROJECT_DIR$/feature/userdashboard/data" />
             <option value="$PROJECT_DIR$/feature/userdashboard/domain" />
+            <option value="$PROJECT_DIR$/feature/userdashboard/presentation" />
             <option value="$PROJECT_DIR$/shared_domain" />
           </set>
         </option>
