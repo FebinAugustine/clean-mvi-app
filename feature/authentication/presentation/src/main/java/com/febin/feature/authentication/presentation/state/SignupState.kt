@@ -1,11 +1,10 @@
 package com.febin.feature.authentication.presentation.state
 
 
-
 import com.febin.feature.authentication.domain.model.SignupError
-import com.febin.feature.authentication.domain.usecase.isValidEmail
-import com.febin.feature.authentication.domain.usecase.isValidPassword
-import com.febin.shared.domain.model.User
+import com.febin.core.ui.util.isValidEmail
+import com.febin.core.ui.util.isValidPassword
+import com.febin.core.ui.util.isValidPhone
 import com.febin.shared_domain.model.User
 
 /**

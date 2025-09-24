@@ -1,21 +1,15 @@
 package com.febin.feature.admindashboard.data.repository
 
+import com.febin.core.data.local.dao.AdminDao
 import com.febin.feature.admindashboard.data.mapper.AdminMapper
 import com.febin.feature.admindashboard.data.remote.api.AdminDashboardApi
 import com.febin.feature.admindashboard.domain.model.AdminMetrics
-import com.febin.feature.admindashboard.domain.model.ReportItem  // Added: Import for ReportItem fields
-import com.febin.feature.admindashboard.domain.repository.AdminDashboardRepository
-import com.febin.feature.admindashboard.data.local.dao.AdminDao
-import com.febin.feature.admindashboard.data.local.entity.AdminMetricsEntity
-import com.febin.feature.admindashboard.data.local.entity.ReportEntity
+import com.febin.feature.admindashboard.domain.model.ReportItem
 import com.febin.feature.admindashboard.domain.model.ReportStatus
+import com.febin.feature.admindashboard.domain.repository.AdminDashboardRepository
 import com.febin.shared_domain.model.Result
 import kotlinx.coroutines.flow.first
 
-/**
- * Impl of AdminDashboardRepository.
- * - Cache-first: Local query, fallback to remote + cache.
- */
 class AdminDashboardRepositoryImpl(
     private val api: AdminDashboardApi,
     private val dao: AdminDao
@@ -23,12 +17,9 @@ class AdminDashboardRepositoryImpl(
 
     override suspend fun getAdminMetrics(): Result<AdminMetrics> {
         return try {
-            // Try local first
             val localMetrics = dao.getAdminMetrics().first()
             if (localMetrics != null) {
-                // Reconstruct (simplified)
                 val reports = dao.getPendingReports().first().map { reportEntity ->
-                    // Map ReportEntity to ReportItem (add to mapper if needed)
                     ReportItem(
                         id = reportEntity.id,
                         title = reportEntity.title,
@@ -45,17 +36,15 @@ class AdminDashboardRepositoryImpl(
                     totalUsers = localMetrics.totalUsers,
                     activeUsers = localMetrics.activeUsers,
                     pendingReports = reports,
-                    recentAdmins = emptyList(),  // From separate query if needed
+                    recentAdmins = emptyList(),
                     systemUptime = localMetrics.systemUptime
                 )
                 return Result.success(metrics)
             }
 
-            // Fallback to remote
             val response = api.getAdminMetrics()
             val domainMetrics = AdminMapper.toDomain(response)
 
-            // Cache
             cacheAdminMetrics(domainMetrics)
 
             Result.success(domainMetrics)
@@ -65,11 +54,10 @@ class AdminDashboardRepositoryImpl(
     }
 
     override suspend fun refreshAdminMetrics(): Result<AdminMetrics> {
-        return getAdminMetrics()  // Force refresh by clearing cache first in prod
+        return getAdminMetrics()
     }
 
     override suspend fun resolveReport(reportId: String): Result<Unit> = try {
-        // Update local/remote
         dao.getPendingReports().first().find { it.id == reportId }?.let { report ->
             dao.insertReports(listOf(report.copy(status = "RESOLVED")))
         }
@@ -79,25 +67,7 @@ class AdminDashboardRepositoryImpl(
     }
 
     private suspend fun cacheAdminMetrics(metrics: AdminMetrics) {
-        // Cache metrics
-        dao.insertAdminMetrics(
-            AdminMetricsEntity(
-                totalUsers = metrics.totalUsers,
-                activeUsers = metrics.activeUsers,
-                systemUptime = metrics.systemUptime
-            )
-        )
-        // Cache reports
-        dao.insertReports(
-            metrics.pendingReports.map { report ->  // report is ReportItem
-                ReportEntity(
-                    id = report.id,  // Now resolves with import
-                    title = report.title,
-                    description = report.description,
-                    status = report.status.name,
-                    timestamp = report.timestamp
-                )
-            }
-        )
+        dao.insertAdminMetrics(AdminMapper.fromDomain(metrics))
+        dao.insertReports(metrics.pendingReports.map { AdminMapper.fromDomain(it) })
     }
 }

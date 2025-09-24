@@ -1,21 +1,21 @@
 package com.febin.feature.userdashboard.data.mapper
 
-import com.febin.feature.userdashboard.data.dto.network.ActivityItemDto
-import com.febin.feature.userdashboard.data.dto.network.MetricsDto
-import com.febin.feature.userdashboard.data.dto.network.UserDashboardResponseDto
-import com.febin.feature.userdashboard.data.dto.network.UserDto
+import com.febin.core.data.local.entity.ActivityEntity
+import com.febin.core.data.local.entity.DashboardEntity
 import com.febin.feature.dashboard.domain.model.ActivityItem
 import com.febin.feature.dashboard.domain.model.DashboardData
 import com.febin.feature.dashboard.domain.model.DashboardError
 import com.febin.feature.dashboard.domain.model.UserMetrics
+import com.febin.feature.userdashboard.data.dto.network.ActivityItemDto
+import com.febin.feature.userdashboard.data.dto.network.MetricsDto
+import com.febin.feature.userdashboard.data.dto.network.UserDashboardResponseDto
+import com.febin.feature.userdashboard.data.dto.network.UserDto
 import com.febin.shared_domain.model.Role
 import com.febin.shared_domain.model.User
 
-/**
- * Mappers for Dashboard DTOs ↔ Domain.
- */
 object DashboardMapper {
 
+    // DTO to Domain
     fun toDomain(dto: UserDashboardResponseDto): DashboardData = DashboardData(
         user = toDomain(dto.user),
         metrics = toDomain(dto.metrics),
@@ -27,8 +27,8 @@ object DashboardMapper {
         id = dto.id,
         email = dto.email,
         name = dto.name,
-        role = Role.USER,  // Default for user dashboard
-        isVerified = true  // Assume from auth
+        role = Role.USER,
+        isVerified = true
     )
 
     private fun toDomain(dto: MetricsDto): UserMetrics = UserMetrics(
@@ -43,6 +43,31 @@ object DashboardMapper {
         title = dto.title,
         description = dto.description,
         timestamp = dto.timestamp
+    )
+
+    fun toDomain(entity: ActivityEntity): ActivityItem = ActivityItem(
+        id = entity.id,
+        title = entity.title,
+        description = entity.description,
+        timestamp = entity.timestamp
+    )
+
+    // Domain to Entity
+    fun fromDomain(domain: DashboardData, userId: String): DashboardEntity = DashboardEntity(
+        userId = userId,
+        totalLogins = domain.metrics.totalLogins,
+        lastLogin = domain.metrics.lastLogin,
+        points = domain.metrics.points,
+        level = domain.metrics.level,
+        notifications = domain.notifications
+    )
+
+    fun fromDomain(domain: ActivityItem, userId: String): ActivityEntity = ActivityEntity(
+        id = domain.id,
+        userId = userId,
+        title = domain.title,
+        description = domain.description,
+        timestamp = domain.timestamp
     )
 
     // Error mapping

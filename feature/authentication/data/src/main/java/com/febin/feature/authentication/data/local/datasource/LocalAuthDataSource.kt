@@ -1,11 +1,10 @@
 package com.febin.feature.authentication.data.local.datasource
 
-import com.febin.feature.authentication.data.local.dao.AuthDao
-import com.febin.feature.authentication.data.local.entity.UserEntity
-import com.febin.feature.authentication.data.local.entity.TokenEntity
+import com.febin.core.data.local.dao.AuthDao
+import com.febin.core.data.local.entity.TokenEntity
+import com.febin.core.data.local.entity.UserEntity
 import com.febin.shared_domain.model.Result
 import com.febin.shared_domain.model.getOrNull
-import com.febin.shared_domain.usecase.getOrNull  // Specific import for extension
 import kotlinx.coroutines.flow.firstOrNull
 
 /**
@@ -23,7 +22,7 @@ class LocalAuthDataSource(
     }
 
     suspend fun getUser(userId: String): Result<UserEntity?> = try {
-        Result.success(authDao.getUserById(userId).firstOrNull())  // Sync for simplicity
+        Result.success(authDao.getUserById(userId).firstOrNull())
     } catch (e: Exception) {
         Result.failure(e)
     }
@@ -50,8 +49,8 @@ class LocalAuthDataSource(
     }
 
     suspend fun isAuthenticated(): Boolean = try {
-        val tokenResult: Result<TokenEntity?> = getToken()  // Fixed: Explicit type for Result
-        tokenResult.getOrNull<TokenEntity?>() != null  // Fixed: Explicit <TokenEntity?> for T in getOrNull
+        val tokenResult = getToken()
+        tokenResult.getOrNull() != null
     } catch (e: Exception) {
         false
     }

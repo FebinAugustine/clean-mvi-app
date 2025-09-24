@@ -43,9 +43,6 @@ dependencies {
 
     // Domain
     implementation(project(":shared_domain"))
-    implementation(project(":feature:authentication:data"))
-    implementation(project(":feature:userdashboard:data"))
-    implementation(project(":feature:admindashboard:data"))
 
     // Ktor
     implementation(libs.ktor.client.core)
@@ -62,4 +59,7 @@ dependencies {
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
+
+    // Testing
+    testImplementation(libs.junit)
 }

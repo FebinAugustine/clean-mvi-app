@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp)
 }
 
 android {
@@ -42,7 +41,19 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android)
 
-    // All features for bindings
+    // Ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.logging)
+
+    // Room Runtime - Needed for databaseBuilder
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+
+    // Project Modules
+    implementation(project(":core:data"))
     implementation(project(":shared_domain"))
     implementation(project(":feature:authentication:domain"))
     implementation(project(":feature:authentication:data"))
@@ -53,14 +64,6 @@ dependencies {
     implementation(project(":feature:admindashboard:domain"))
     implementation(project(":feature:admindashboard:data"))
     implementation(project(":feature:admindashboard:presentation"))
-    implementation(project(":app"))
-    
-
-
-    // Room for DB (if global)
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)

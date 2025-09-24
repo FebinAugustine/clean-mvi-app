@@ -13,6 +13,11 @@ fun String.isValidPassword(): Boolean {
     return this.length >= 8  // Basic validation; expand as needed
 }
 
+fun String.isValidPhone(): Boolean {
+    return android.util.Patterns.PHONE.matcher(this).matches()
+}
+
+
 // Timber extension for custom logging
 fun Timber.logDebug(tag: String, message: String) {
     Timber.tag(tag).d(message)

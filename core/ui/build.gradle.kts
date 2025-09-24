@@ -61,14 +61,6 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.timber)
 
-    // koin
-    implementation(libs.koin.core)
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
-
-    // di module
-    implementation(project(":di"))
-
 
 
     // Test Implementations

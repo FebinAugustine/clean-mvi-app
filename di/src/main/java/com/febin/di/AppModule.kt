@@ -1,6 +1,5 @@
-package com.febin.cleanmviapp.di
+package com.febin.di
 
-import com.febin.di.SharedPreferencesManager
 import org.koin.dsl.module
 
 /**

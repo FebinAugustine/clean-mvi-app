@@ -1,29 +1,27 @@
 package com.febin.feature.admindashboard.data.mapper
 
+import com.febin.core.data.local.entity.AdminMetricsEntity
+import com.febin.core.data.local.entity.ReportEntity
 import com.febin.feature.admindashboard.data.dto.network.AdminResponseDto
-import com.febin.feature.admindashboard.data.dto.network.AdminUserDto
-import com.febin.feature.admindashboard.data.dto.network.ReportItemDto
+import com.febin.feature.admindashboard.data.dto.network.ReportDto
 import com.febin.feature.admindashboard.domain.model.AdminDashboardError
 import com.febin.feature.admindashboard.domain.model.AdminMetrics
 import com.febin.feature.admindashboard.domain.model.ReportItem
 import com.febin.feature.admindashboard.domain.model.ReportStatus
-import com.febin.shared_domain.model.Role
 import com.febin.shared_domain.model.User
 
-/**
- * Mappers for Admin DTOs ↔ Domain.
- */
+// Rewriting this file from scratch to ensure correctness and break any cache issues.
 object AdminMapper {
 
     fun toDomain(dto: AdminResponseDto): AdminMetrics = AdminMetrics(
-        totalUsers = dto.totalUsers,
-        activeUsers = dto.activeUsers,
-        pendingReports = dto.pendingReports.map { toDomain(it) },
-        recentAdmins = dto.recentAdmins.map { toDomain(it) },
-        systemUptime = dto.systemUptime
+        totalUsers = dto.metrics.totalUsers,
+        activeUsers = dto.metrics.activeUsers,
+        pendingReports = dto.reports.map { toDomain(it) },
+        recentAdmins = dto.admins.map { User(id = it.id, email = it.email, name = it.name) },
+        systemUptime = dto.metrics.systemUptime
     )
 
-    private fun toDomain(dto: ReportItemDto): ReportItem = ReportItem(
+    private fun toDomain(dto: ReportDto): ReportItem = ReportItem(
         id = dto.id,
         title = dto.title,
         description = dto.description,
@@ -35,18 +33,23 @@ object AdminMapper {
         timestamp = dto.timestamp
     )
 
-    private fun toDomain(dto: AdminUserDto): User = User(
-        id = dto.id,
-        email = dto.email,
-        name = dto.name,
-        role = Role.ADMIN
+    fun fromDomain(domain: AdminMetrics): AdminMetricsEntity = AdminMetricsEntity(
+        totalUsers = domain.totalUsers,
+        activeUsers = domain.activeUsers,
+        systemUptime = domain.systemUptime
     )
 
-    // Error mapping
+    fun fromDomain(domain: ReportItem): ReportEntity = ReportEntity(
+        id = domain.id,
+        title = domain.title,
+        description = domain.description,
+        status = domain.status.name,
+        timestamp = domain.timestamp
+    )
+
     fun mapToAdminDashboardError(throwable: Throwable, httpCode: Int? = null): AdminDashboardError = when {
         httpCode == 403 -> AdminDashboardError.NoAdminAccess
-        httpCode == 404 -> AdminDashboardError.ReportFetchFailed("No data")
-        httpCode == 0 || throwable.message?.contains("network") == true -> AdminDashboardError.OfflineMode
-        else -> AdminDashboardError.ReportFetchFailed(throwable.message ?: "Admin fetch failed")
+        throwable.message?.contains("network") == true -> AdminDashboardError.OfflineMode
+        else -> AdminDashboardError.ReportFetchFailed(throwable.message ?: "An unknown error occurred")
     }
 }

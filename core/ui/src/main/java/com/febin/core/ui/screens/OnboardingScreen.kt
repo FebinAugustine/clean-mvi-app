@@ -11,10 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.febin.core.ui.components.CommonButton
-import com.febin.core.ui.theme.AppTheme
-import com.febin.di.SharedPreferencesManager  // Added: Import from :di
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject  // For injection
 
 @Composable
 fun OnboardingScreen(
@@ -27,7 +24,6 @@ fun OnboardingScreen(
     )
     val pagerState = rememberPagerState(pageCount = { pages.size })
     val coroutineScope = rememberCoroutineScope()
-    val prefsManager = koinInject<SharedPreferencesManager>()  // Inject from Koin
 
     Column(
         modifier = Modifier
@@ -86,7 +82,6 @@ fun OnboardingScreen(
             CommonButton(
                 onClick = {
                     if (pagerState.currentPage == pages.lastIndex) {
-                        prefsManager.setOnboardingCompleted(true)  // Now resolves
                         onComplete()  // Complete onboarding
                     } else {
                         coroutineScope.launch {
