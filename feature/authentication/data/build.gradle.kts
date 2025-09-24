@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)  // For Room compiler
-    kotlin("plugin.serialization") version libs.versions.kotlin.get()  // For Ktor serialization
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {

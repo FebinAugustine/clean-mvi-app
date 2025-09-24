@@ -1,12 +1,6 @@
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
@@ -22,7 +16,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Clean MVI App"
 include(":app")
-include(":core")
 
 include(":shared_domain")
 include(":feature:authentication:domain")
@@ -35,3 +28,7 @@ include(":feature:userdashboard:presentation")
 include(":feature:admindashboard:domain")
 include(":feature:admindashboard:data")
 include(":feature:admindashboard:presentation")
+include(":core:ui")
+
+include(":di")
+include(":core:data")

@@ -17,6 +17,7 @@ import com.febin.feature.admindashboard.presentation.screen.AdminDashboardScreen
 fun AdminDashboardNavGraph(
     navController: NavHostController
 ) {
+
     NavHost(
         navController = navController,
         startDestination = "dashboard",
@@ -26,6 +27,7 @@ fun AdminDashboardNavGraph(
             AdminDashboardScreen(navController = navController)
         }
     }
+}*/
 }
 
 fun NavGraphBuilder.adminDashboardNavGraph(navController: NavHostController) {

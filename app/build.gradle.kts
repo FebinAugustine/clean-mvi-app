@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
 //    alias(libs.plugins.ksp)
-    kotlin("plugin.serialization") version libs.versions.kotlin.get()
+    alias(libs.plugins.kotlin.serialization)
 
 }
 
@@ -45,6 +45,11 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()  // Use the entry
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
 
 dependencies {
@@ -57,11 +62,28 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.navigation.compose)
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.timber)
+    implementation(libs.kotlinx.coroutines.android)
+
+    // All modules
+    implementation(project(":di"))
+    implementation(project(":core:ui"))
+    implementation(project(":feature:authentication:presentation"))
+    implementation(project(":feature:userdashboard:presentation"))
+    implementation(project(":feature:admindashboard:presentation"))
+    implementation(project(":shared_domain"))
+//    implementation(project(":shared_data"))
+
+
+    // Test deps
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+//    androidTestImplementation(platform(libs.compose.bom))
+//    androidTestImplementation(libs.compose.ui.test.junit4)
+//    debugImplementation(libs.compose.ui.tooling)
+//    debugImplementation(libs.compose.ui.test.manifest)
 }

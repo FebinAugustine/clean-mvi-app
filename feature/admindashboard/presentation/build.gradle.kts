@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -35,6 +36,10 @@ android {
         compose = true
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -47,7 +52,7 @@ dependencies {
     // Domain and core deps
     implementation(project(":feature:admindashboard:domain"))
     implementation(project(":shared_domain"))
-    implementation(project(":core"))  // Components, theme
+    implementation(project(":core:ui"))  // Components, theme
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))
