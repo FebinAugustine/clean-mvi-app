@@ -28,3 +28,5 @@ include(":shared_domain")
 include(":feature:authentication:domain")
 include(":feature:authentication:data")
 include(":feature:authentication:presentation")
+
+include(":feature:userdashboard:domain")
