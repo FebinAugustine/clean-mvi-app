@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
 
     alias(libs.plugins.android.library) apply false
-    // alias(libs.plugins.ksp) apply false  // Uncomment if needed globally
+    alias(libs.plugins.ksp) apply false
     kotlin("plugin.serialization") version libs.versions.kotlin.get() apply false
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
 }

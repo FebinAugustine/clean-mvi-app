@@ -1,6 +1,8 @@
+// Updated: shared_domain/usecase/GetSharedUserUseCase.kt (remove duplication; import Result)
 package com.febin.shared_domain.usecase
 
-import com.febin.shared_domain.model.SharedUserError  // Fixed: Use SharedUserError for specific errors
+import com.febin.shared_domain.model.Result  // Import Result from model
+import com.febin.shared_domain.model.SharedUserError  // For specific errors
 import com.febin.shared_domain.model.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -49,30 +51,3 @@ interface UserRepository {
      */
     suspend fun getUserById(id: String): User?
 }
-
-/**
- * Extension for Result (Kotlin stdlib) to add loading state.
- * - Custom for domain; use sealed Result or Either in prod for richer errors.
- */
-sealed class Result<out T> {
-    data object Loading : Result<Nothing>()
-    data class Success<T>(val data: T) : Result<T>()
-    data class Failure(val exception: Throwable) : Result<Nothing>()
-
-    fun <R> map(transform: (T) -> R): Result<R> = when (this) {
-        is Loading -> Loading
-        is Success -> Success(transform(data))
-        is Failure -> Failure(exception)
-    }
-
-    companion object {
-        fun <T> loading(): Result<T> = Loading as Result<T>
-        fun <T> success(data: T): Result<T> = Success(data)
-        fun failure(exception: Throwable): Result<Nothing> = Failure(exception)
-    }
-}
-
-fun <T> Result<T>.isLoading(): Boolean = this is Result.Loading
-fun <T> Result<T>.isSuccess(): Boolean = this is Result.Success
-fun <T> Result<T>.getOrNull(): T? = (this as? Result.Success)?.data
-fun <T> Result<T>.exceptionOrNull(): Throwable? = (this as? Result.Failure)?.exception

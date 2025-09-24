@@ -1,6 +1,10 @@
+// Updated: shared_domain/model/Result.kt (new dedicated file for Result)
 package com.febin.shared_domain.model
 
-
+/**
+ * Custom Result sealed class with loading state.
+ * - Placed in model for shared domain use; extensions for convenience.
+ */
 sealed class Result<out T> {
     data object Loading : Result<Nothing>()
     data class Success<T>(val data: T) : Result<T>()

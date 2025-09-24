@@ -5,6 +5,7 @@
       <module name="Clean_MVI_App.app" target="21" />
       <module name="Clean_MVI_App.core" target="21" />
       <module name="Clean_MVI_App.feature.authentication.data" target="21" />
+      <module name="Clean_MVI_App.feature.authentication.presentation" target="21" />
     </bytecodeTargetLevel>
   </component>
 </project>

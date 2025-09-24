@@ -42,8 +42,11 @@ sealed class SharedUserError : UserError() {
     }
 
     data class InvalidEmail(override val message: String) : SharedUserError()
+
     data object AlreadyExists : SharedUserError() {
         private fun readResolve(): Any = AlreadyExists
         override fun getUserMessage(): String = "User already exists."
     }
+
+    data class Unknown(override val message: String) : SharedUserError()  // Added: Parameterized generic error
 }
